@@ -286,6 +286,8 @@ static void check_dfu_mode(void) {
 
   // Enter DFU mode accordingly to input
   if (dfu_start || !valid_app) {
+    _ota_dfu = true;
+
     if (_ota_dfu) {
       led_state(STATE_BLE_DISCONNECTED);
       if (!_sd_inited) mbr_init_sd();
