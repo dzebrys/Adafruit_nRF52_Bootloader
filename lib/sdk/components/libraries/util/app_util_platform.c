@@ -38,6 +38,7 @@
  * 
  */
 #include "app_util_platform.h"
+#include "dfu_types.h"
 
 /* Global nvic state instance, required by nrf_nvic.h */
 nrf_nvic_state_t nrf_nvic_state;
@@ -66,11 +67,14 @@ void app_util_critical_region_enter(uint8_t *p_nested)
 #endif
 
 #if defined(SOFTDEVICE_PRESENT)
-    /* return value can be safely ignored */
-    (void) sd_nvic_critical_region_enter(p_nested);
-#else
-    app_util_disable_irq();
+    if (SD_MAGIC_OK()) {
+        /* return value can be safely ignored */
+        (void) sd_nvic_critical_region_enter(p_nested);
+    } else
 #endif
+    {
+        app_util_disable_irq();
+    }
 }
 
 void app_util_critical_region_exit(uint8_t nested)
@@ -80,11 +84,14 @@ void app_util_critical_region_exit(uint8_t nested)
 #endif
 
 #if defined(SOFTDEVICE_PRESENT)
-    /* return value can be safely ignored */
-    (void) sd_nvic_critical_region_exit(nested);
-#else
-    app_util_enable_irq();
+    if (SD_MAGIC_OK()) {
+        /* return value can be safely ignored */
+        (void) sd_nvic_critical_region_exit(nested);
+    } else
 #endif
+    {
+        app_util_enable_irq();
+    }
 }
 
 
