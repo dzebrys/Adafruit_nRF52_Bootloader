@@ -26,6 +26,7 @@
 #include "nrfx_power.h"
 #include "nrf_sdm.h"
 #include "nrf_soc.h"
+#include "dfu_types.h"
 
 #include "nrf_usbd.h"
 #include "tusb.h"
@@ -61,6 +62,7 @@ void usb_init(bool cdc_only) {
   // We need to invoke the handler based on the status initially
   uint32_t usb_reg;
   uint8_t sd_en = false;
+(??)  (void) sd_softdevice_is_enabled(&sd_en);
 
   if (is_sd_existed()) {
     sd_softdevice_is_enabled(&sd_en);

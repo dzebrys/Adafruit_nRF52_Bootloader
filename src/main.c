@@ -307,6 +307,9 @@ static void check_dfu_mode(void) {
       bootloader_dfu_start(_ota_dfu, 0, false);
     }
 
+    // wait for macOS file copy operation
+    NRFX_DELAY_MS(500);
+
     if (_ota_dfu) {
       sd_softdevice_disable();
     } else {
